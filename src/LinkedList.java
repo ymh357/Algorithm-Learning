@@ -131,6 +131,7 @@ public class LinkedList {
         for(Node next = head; next!=null; next=next.next){
             out += Integer.toString(next.data) + ", ";
         }
+        out += '\n';
         return out;
     }
 

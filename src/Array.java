@@ -10,21 +10,18 @@ public class Array {
         return size;
     }
 
-    public boolean insert(int data){
+    public void insert(int data){
         if(size < array.length){
             array[size] = data;
             size++;
-            return true;
         }else if(size == array.length){
             int[] newArray = new int[array.length * 2];
             System.arraycopy(array, 0, newArray, 0, size);
             array = newArray;
             array[size] = data;
             size++;
-            return true;
         }else{
             System.out.println("error: length > capacity.");
-            return false;
         }
     }
 
@@ -92,11 +89,13 @@ public class Array {
         return false;
     }
 
-    public void printArray(){
+    public String printArray(){
+        String out = "";
         for(int i = 0; i< size; i++){
-            System.out.print(array[i]);
+            out += array[i] + ", ";
         }
-        System.out.print('\n');
+        out += '\n';
+        return out;
     }
 
     public static void main(String[] args) {
@@ -107,10 +106,10 @@ public class Array {
         array.insert(1,4);
         array.delete();
         array.insert(99);
-        array.printArray();
+        System.out.print(array.printArray());
         array.insert(4);
         array.delete(1);
         array.insert(5);
-        array.printArray();
+        System.out.print(array.printArray());
     }
 }
