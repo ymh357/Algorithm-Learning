@@ -1,24 +1,24 @@
-public class ArrayStack {
+public class ArrayStack <T>{
 
-    private Array array;
+    private MyArray<T> array;
 
     public int getSize() {
         return array.getSize();
     }
 
     public ArrayStack(int capacity) {
-        array = new Array(capacity);
+        array = new MyArray(capacity);
     }
 
-    public int getData(int index){
+    public T getData(int index){
         return array.getData(index);
     }
 
-    public boolean searchData(int data){
+    public boolean searchData(T data){
         return array.searchArray(data);
     }
 
-    public void push(int data){
+    public void push(T data){
         array.insert(data);
     }
 

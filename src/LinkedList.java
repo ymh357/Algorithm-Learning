@@ -1,4 +1,4 @@
-public class LinkedList {
+public class LinkedList<T> {
 
     private Node head;
     private Node tail;
@@ -9,7 +9,7 @@ public class LinkedList {
         return size;
     }
 
-    public LinkedList(int[] initialArray){
+    public LinkedList(T[] initialArray){
 
         if(initialArray == null || initialArray.length == 0){
             head = null;
@@ -31,7 +31,7 @@ public class LinkedList {
         size = initialArray.length;
     }
 
-    public boolean searchList(int data){
+    public boolean searchList(T data){
         for(Node next = head; next!=null; next=next.next){
             if(next.data == data){
                 return true;
@@ -40,7 +40,7 @@ public class LinkedList {
         return false;
     }
 
-    public int getData(int index){
+    public T getData(int index){
         int i = 0;
         for(Node next = head; next!=null; next=next.next){
             if(i == index){
@@ -48,10 +48,10 @@ public class LinkedList {
             }
             i++;
         }
-        return -1;
+        return null;
     }
 
-    public boolean insert(int index, int data){
+    public boolean insert(int index, T data){
 
         // Justify head.
         if(index == 0){
@@ -79,7 +79,7 @@ public class LinkedList {
         return false;
     }
 
-    public void insert(int data){
+    public void insert(T data){
         Node newNode = new Node(data,null);
         tail.next = newNode;
         tail = newNode;
@@ -129,24 +129,24 @@ public class LinkedList {
     public String printList(){
         String out= "";
         for(Node next = head; next!=null; next=next.next){
-            out += Integer.toString(next.data) + ", ";
+            out += next.data + ", ";
         }
         out += '\n';
         return out;
     }
 
     private class Node{
-        public int data;
+        public T data;
         public Node next;
 
-        public Node(int data, Node next){
+        public Node(T data, Node next){
             this.data = data;
             this.next = next;
         }
     }
 
     public static void main(String[] args) {
-        LinkedList ll = new LinkedList(new int[]{1,2,3,4,5});
+        LinkedList<Integer> ll = new LinkedList<Integer> (new Integer[]{1,2,3,4,5});
         ll.delete();
         ll.delete();
         ll.delete();

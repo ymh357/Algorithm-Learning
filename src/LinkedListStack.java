@@ -1,23 +1,23 @@
-public class LinkedListStack {
-    private LinkedList linkedList;
+public class LinkedListStack<T> {
+    private LinkedList<T> linkedList;
 
     public int getSize() {
         return linkedList.getSize();
     }
 
-    public LinkedListStack(int[] initialArray) {
-        linkedList = new LinkedList(initialArray);
+    public LinkedListStack(T[] initialArray) {
+        linkedList = new LinkedList<T>(initialArray);
     }
 
-    public int getData(int index){
+    public T getData(int index){
         return linkedList.getData(index);
     }
 
-    public boolean searchData(int data){
+    public boolean searchData(T data){
         return linkedList.searchList(data);
     }
 
-    public void push(int data){
+    public void push(T data){
         linkedList.insert(data);
     }
 

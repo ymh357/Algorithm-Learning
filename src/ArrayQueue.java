@@ -1,27 +1,29 @@
-public class ArrayQueue {
+public class ArrayQueue<T> {
 
-    private int[] array;
+    private T[] array;
     private int headIndex = -1;
     private int size;
-    private int capacity;
 
     public int getSize() {
         return size;
     }
 
     public ArrayQueue(int capacity) {
-        array = new int[capacity];
-        this.capacity = capacity;
+        array = (T[]) new Object[capacity];
         size = 0;
     }
 
-    public int getData(int index){
-        return array[(headIndex + index) % capacity];
+    public T getData(int index){
+        if(index < 0 || index >= size){
+            System.out.println("Error: index is < 0 or >= size");
+            return null;
+        }
+        return array[(headIndex + index) % array.length];
     }
 
-    public boolean searchData(int data){
+    public boolean searchData(T data){
         for(int i=0; i<size; i++){
-            int index = (i + headIndex) % capacity;
+            int index = (i + headIndex) % array.length;
             if(array[index] == data){
                 return true;
             }
@@ -29,30 +31,33 @@ public class ArrayQueue {
         return false;
     }
 
-    public void push(int data){
+    public void push(T data){
         if (size == 0){
             headIndex = 0;
         }
 
-        if(size < capacity){
-            int index = (headIndex + size) % capacity;
+        if(size < array.length){
+            int index = (headIndex + size) % array.length;
             array[index] = data;
             size ++;
         }
         else{
-            int[] newArray = new int[capacity*2];
+            T[] newArray = (T[]) new Object[array.length * 2];
             for(int i = 0; i < size; i ++){
                 newArray[i] = getData(i);
             }
             newArray[size] = data;
+            array = newArray;
+            headIndex = 0;
+            size ++;
         }
     }
 
     public boolean unshift(){
-        if(size == 0){
+        if(size <= 0){
             return false;
         }
-        headIndex = (headIndex + 1) % capacity;
+        headIndex = (headIndex + 1) % array.length;
         size --;
         return true;
     }
@@ -68,12 +73,18 @@ public class ArrayQueue {
 
 
     public static void main(String[] args) {
-        ArrayQueue arrayQueue = new ArrayQueue(3);
+        ArrayQueue<Integer> arrayQueue = new ArrayQueue<Integer>(3);
         arrayQueue.push(1);
         arrayQueue.push(2);
-        arrayQueue.push(3);
         arrayQueue.unshift();
+        arrayQueue.push(3);
         arrayQueue.push(4);
+        arrayQueue.push(5);
+        arrayQueue.push(6);
+        arrayQueue.unshift();
+        arrayQueue.push(7);
+        arrayQueue.push(8);
+        arrayQueue.unshift();
 
         System.out.print(arrayQueue.printQueue());
     }

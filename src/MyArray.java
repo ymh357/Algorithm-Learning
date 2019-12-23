@@ -1,22 +1,27 @@
-public class Array {
+import java.lang.reflect.Array;
 
-    private int[] array;
+public class MyArray<T> {
+
+    private T[] array;
     private int size;
 
-    public Array(int capacity){
-        this.array = new int[capacity];
+    public MyArray(int capacity){
+        if(capacity <= 0){
+            System.out.print("Error: capacity <= 0.");
+        }
+        this.array = (T[]) new Object[capacity];
         size = 0;
     }
     public int getSize() {
         return size;
     }
 
-    public void insert(int data){
+    public void insert(T data){
         if(size < array.length){
             array[size] = data;
             size++;
         }else if(size == array.length){
-            int[] newArray = new int[array.length * 2];
+            T[] newArray = (T[]) new Object[array.length * 2];
             System.arraycopy(array, 0, newArray, 0, size);
             array = newArray;
             array[size] = data;
@@ -26,7 +31,7 @@ public class Array {
         }
     }
 
-    public boolean insert(int index, int data){
+    public boolean insert(int index, T data){
         if(index >= size){
             return false;
         }
@@ -38,7 +43,7 @@ public class Array {
             size++;
             return true;
         }else if(size == array.length){
-            int[] newArray = new int[array.length * 2];
+            T[] newArray = (T[]) new Object[array.length * 2];
             System.arraycopy(array, 0, newArray, 0, size);
             array = newArray;
             for(int i = size - 1; i >= index; i--){
@@ -74,14 +79,15 @@ public class Array {
         return true;
     }
 
-    public int getData(int index){
-        if(index >= size){
-            return -1;
+    public T getData(int index){
+        if(index >= size || index < 0){
+            System.out.println("Error: index is < 0 or >= size");
+            return null;
         }
         return array[index];
     }
 
-    public boolean searchArray(int data){
+    public boolean searchArray(T data){
         for(int i=0; i<size; i++){
             if(array[i] == data){
                 return true;
@@ -100,7 +106,7 @@ public class Array {
     }
 
     public static void main(String[] args) {
-        Array array = new Array(3);
+        MyArray<Integer> array = new MyArray<Integer>(3);
         array.insert(1);
         array.insert(2);
         array.insert(1,3);
