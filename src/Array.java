@@ -5,6 +5,7 @@ public class Array {
 
     public Array(int capacity){
         this.array = new int[capacity];
+        size = 0;
     }
     public int getSize() {
         return size;
