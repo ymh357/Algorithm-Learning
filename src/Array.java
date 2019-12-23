@@ -52,6 +52,7 @@ public class Array {
         }else{
             System.out.println("error: length > capacity.");
             return false;
+
         }
     }
 
@@ -73,6 +74,22 @@ public class Array {
         }
         size--;
         return true;
+    }
+
+    public int getData(int index){
+        if(index >= size){
+            return -1;
+        }
+        return array[index];
+    }
+
+    public boolean searchArray(int data){
+        for(int i=0; i<size; i++){
+            if(array[i] == data){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void printArray(){

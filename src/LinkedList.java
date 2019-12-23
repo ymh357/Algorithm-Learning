@@ -3,15 +3,21 @@ public class LinkedList {
     private Node head;
     private Node tail;
 
-    private int length;
+    private int size;
 
-    public int getLength() {
-        return length;
+    public int getSize() {
+        return size;
     }
 
     public LinkedList(int[] initialArray){
 
-        tail = new Node(initialArray[initialArray.length - 1],null);
+        if(initialArray == null || initialArray.length == 0){
+            head = null;
+            tail = null;
+            size = 0;
+            return;
+        }
+
         head = new Node(initialArray[0], null);
         Node previous = head;
         Node next = null;
@@ -20,7 +26,9 @@ public class LinkedList {
             previous.next = next;
             previous = next;
         }
-        length = initialArray.length;
+        next.next = null;
+        tail = next;
+        size = initialArray.length;
     }
 
     public boolean searchList(int data){
@@ -43,13 +51,27 @@ public class LinkedList {
         return -1;
     }
 
-    public boolean insertData(int index, int data){
+    public boolean insert(int index, int data){
+
+        // Justify head.
+        if(index == 0){
+            Node newNode = new Node(data, head);
+            head = newNode;
+            ++size;
+            return true;
+        }
         int i = 0;
         for(Node next = head; next!=null; next=next.next){
-            if(i == index){
+            if(i == index - 1){
                 Node newNode = new Node(data, null);
                 newNode.next = next.next;
                 next.next = newNode;
+
+                // Justify tail.
+                if(index == size){
+                    tail = tail.next;
+                }
+                ++size;
                 return true;
             }
             i++;
@@ -57,15 +79,51 @@ public class LinkedList {
         return false;
     }
 
-    public boolean deleteData(int index, int data){
+    public void insert(int data){
+        Node newNode = new Node(data,null);
+        tail.next = newNode;
+        tail = newNode;
+        ++size;
+    }
+
+    public boolean delete(int index){
+
+        // Justify head.
+        if(index == 0){
+            head = head.next;
+            --size;
+            return true;
+        }
+
         int i = 0;
         for(Node next = head; next!=null; next=next.next){
             if(i == index - 1){
                 next.next = next.next.next;
+
+                // Justify tail.
+                if(index == size){
+                    tail = next;
+                }
+                --size;
+                return true;
             }
             i++;
         }
         return false;
+    }
+
+    public boolean  delete(){
+        if(size == 0){
+            return false;
+        }
+        Node secondLastNode  = head;
+        while(secondLastNode.next != tail ){
+            secondLastNode=secondLastNode.next;
+        }
+        secondLastNode.next = null;
+        tail = secondLastNode;
+        size --;
+        return true;
     }
 
     public String printList(){
@@ -88,8 +146,11 @@ public class LinkedList {
 
     public static void main(String[] args) {
         LinkedList ll = new LinkedList(new int[]{1,2,3,4,5});
-        ll.deleteData(3,66);
+        ll.delete();
+        ll.delete();
+        ll.delete();
+        ll.insert(9);
         System.out.println(ll.printList());
-        System.out.println(ll.getData(3));
+        System.out.println(ll.getSize());
     }
 }
