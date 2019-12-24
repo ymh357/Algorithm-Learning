@@ -1,11 +1,15 @@
+import java.util.HashMap;
+
 public class MyHashMap<K, V> {
 
     private MyArray<LinkedList<Pair<K, V>>> array;
+    private final float LoadFactor = 0.75F;
 
     public int getSize(){
         int size = 0;
         for(LinkedList<Pair<K, V>> ll: array){
-            size += ll.getSize();
+            if(ll != null)
+                size += ll.getSize();
         }
         return size;
     }
@@ -17,8 +21,12 @@ public class MyHashMap<K, V> {
         }
     }
 
+    public int getHash(K key){
+        return key.hashCode() % array.getCapacity();
+    }
+
     public V get(K key){
-        int index = key.hashCode() % array.getCapacity();
+        int index = getHash(key);
         for(Pair<K,V> pair: array.getData(index)){
             if(key.equals(pair.key)){
                 return pair.value;
@@ -29,7 +37,30 @@ public class MyHashMap<K, V> {
     }
 
     public void put(K key, V value){
-        int index = key.hashCode() % array.getCapacity();
+
+        if(getSize() >= array.getCapacity() * LoadFactor){
+            int index = getHash(key);
+            boolean no_resize = false;
+            if(array.getData(index) != null){
+                // Index in use.
+                LinkedList<Pair<K, V>> linkedList = array.getData(index);
+                int pos = linkedList.searchList(new Pair<K, V>(key, value));
+                if(pos != -1){
+                    // key in use.
+                    no_resize = true;
+                }
+            }
+            if(!no_resize){
+                resize();
+            }
+        }
+
+        _put(key, value);
+    }
+
+    private void _put(K key, V value){
+
+        int index = getHash(key);
         if(array.getData(index) == null){
             // Index not used.
             LinkedList<Pair<K, V>> newLinkedList = new LinkedList<>(null);
@@ -40,7 +71,7 @@ public class MyHashMap<K, V> {
             LinkedList<Pair<K, V>> linkedList = array.getData(index);
             int pos = linkedList.searchList(new Pair<K, V>(key, value));
             if(pos != -1){
-                // If same index, then replace a with b.
+                // If same key, then replace a with b.
                 linkedList.update(pos, new Pair<K, V>(key, value));
             }else{
                 linkedList.insert(new Pair<K, V>(key, value));
@@ -48,8 +79,31 @@ public class MyHashMap<K, V> {
         }
     }
 
+    private void resize() {
+
+        MyArray<Pair<K,V>> pairArray = new MyArray<Pair<K,V>>(getSize());
+        for(LinkedList<Pair<K, V>> ll: array){
+            if(ll == null){
+                continue;
+            }
+            for(Pair<K,V> pair: ll){
+                pairArray.insert(pair);
+            }
+        }
+
+        MyArray<LinkedList<Pair<K, V>>> newArray = new MyArray<LinkedList<Pair<K, V>>>(array.getCapacity() * 2);
+        for(int i=0; i < newArray.getCapacity(); i++){
+            newArray.insert(null);
+        }
+
+        array = newArray;
+        for(Pair<K,V> pair: pairArray){
+            _put(pair.key, pair.value);
+        }
+    }
+
     public boolean remove(K key){
-        int index = key.hashCode() % array.getCapacity();
+        int index = getHash(key);
         int position = -1;
         boolean keyExist = false;
         for(Pair<K,V> pair: array.getData(index)){
@@ -89,12 +143,9 @@ public class MyHashMap<K, V> {
 
     public static void main(String[] args) {
         MyHashMap<Integer, String> myHashMap = new MyHashMap<Integer, String>(3);
-        myHashMap.put(4,"yu");
-        myHashMap.put(5,"ming");
-        myHashMap.put(6,"hao");
-        myHashMap.put(7,"zhang");
+        myHashMap.put(7,"sth");
         myHashMap.put(8,"yuanchu");
-        myHashMap.put(9,"wtf");
+        myHashMap.put(9, "sth");
         myHashMap.put(8,"yuanchu2");
         System.out.print(myHashMap.getSize());
         myHashMap.get(8);
