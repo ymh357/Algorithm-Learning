@@ -1,4 +1,6 @@
-public class ArrayStack <T>{
+import java.util.Iterator;
+
+public class ArrayStack <T> implements Iterable<T>{
 
     private MyArray<T> array;
 
@@ -14,7 +16,7 @@ public class ArrayStack <T>{
         return array.getData(index);
     }
 
-    public boolean searchData(T data){
+    public int searchData(T data){
         return array.searchArray(data);
     }
 
@@ -31,4 +33,8 @@ public class ArrayStack <T>{
     }
 
 
+    @Override
+    public Iterator<T> iterator() {
+        return array.iterator();
+    }
 }

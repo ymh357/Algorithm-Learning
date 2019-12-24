@@ -1,4 +1,6 @@
-public class LinkedList<T> {
+import java.util.Iterator;
+
+public class LinkedList<T> implements Iterable<T>{
 
     private Node head;
     private Node tail;
@@ -31,13 +33,15 @@ public class LinkedList<T> {
         size = initialArray.length;
     }
 
-    public boolean searchList(T data){
+    public int searchList(T data){
+        int position = -1;
         for(Node next = head; next!=null; next=next.next){
-            if(next.data == data){
-                return true;
+            position ++;
+            if(data.equals(next.data)){
+                return position;
             }
         }
-        return false;
+        return -1;
     }
 
     public T getData(int index){
@@ -49,6 +53,18 @@ public class LinkedList<T> {
             i++;
         }
         return null;
+    }
+
+    public boolean update(int index, T data){
+        int i = 0;
+        for(Node next = head; next!=null; next=next.next){
+            if(i == index){
+                next.data = data;
+                return true;
+            }
+            i++;
+        }
+        return false;
     }
 
     public boolean insert(int index, T data){
@@ -81,6 +97,13 @@ public class LinkedList<T> {
 
     public void insert(T data){
         Node newNode = new Node(data,null);
+        if(tail == null){
+            // Insert to empty list.
+            head = newNode;
+            tail =newNode;
+            ++size;
+            return;
+        }
         tail.next = newNode;
         tail = newNode;
         ++size;
@@ -116,6 +139,15 @@ public class LinkedList<T> {
         if(size == 0){
             return false;
         }
+
+        if(head == tail){
+            // When only one element left.
+            head = null;
+            tail = null;
+            size = 0;
+            return true;
+        }
+
         Node secondLastNode  = head;
         while(secondLastNode.next != tail ){
             secondLastNode=secondLastNode.next;
@@ -135,6 +167,25 @@ public class LinkedList<T> {
         return out;
     }
 
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            @Override
+            public boolean hasNext() {
+
+                return iterator != null;
+            }
+
+            @Override
+            public T next() {
+                T data = iterator.data;
+                iterator = iterator.next;
+                return data;
+            }
+            private Node iterator = head;
+        };
+    }
+
     private class Node{
         public T data;
         public Node next;
@@ -146,12 +197,17 @@ public class LinkedList<T> {
     }
 
     public static void main(String[] args) {
-        LinkedList<Integer> ll = new LinkedList<Integer> (new Integer[]{1,2,3,4,5});
-        ll.delete();
-        ll.delete();
-        ll.delete();
+        LinkedList<Integer> ll = new LinkedList<Integer> (null);
+
         ll.insert(9);
+        ll.delete();
+        ll.insert(10);
+        ll.insert(9);
+        ll.update(1,11);
         System.out.println(ll.printList());
-        System.out.println(ll.getSize());
+        for(Integer i: ll){
+            System.out.print(i);
+        }
+        ll.searchList(10);
     }
 }

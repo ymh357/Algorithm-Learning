@@ -1,27 +1,36 @@
 import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Iterator;
 
-public class MyArray<T> {
+public class MyArray<T> implements Iterable<T> {
 
     private T[] array;
     private int size;
+    private int capacity;
 
     public MyArray(int capacity){
         if(capacity <= 0){
             System.out.print("Error: capacity <= 0.");
         }
         this.array = (T[]) new Object[capacity];
+        this.capacity = capacity;
         size = 0;
     }
     public int getSize() {
         return size;
     }
 
+    public int getCapacity() {
+        return capacity;
+    }
+
     public void insert(T data){
         if(size < array.length){
             array[size] = data;
             size++;
-        }else if(size == array.length){
-            T[] newArray = (T[]) new Object[array.length * 2];
+        }else if(size == capacity){
+            capacity *= 2;
+            T[] newArray = (T[]) new Object[capacity];
             System.arraycopy(array, 0, newArray, 0, size);
             array = newArray;
             array[size] = data;
@@ -35,15 +44,16 @@ public class MyArray<T> {
         if(index >= size){
             return false;
         }
-        if(size < array.length){
+        if(size < capacity){
             for(int i = size - 1; i >= index; i--){
                 array[i+1] = array[i];
             }
             array[index] = data;
             size++;
             return true;
-        }else if(size == array.length){
-            T[] newArray = (T[]) new Object[array.length * 2];
+        }else if(size == capacity){
+            capacity *= 2;
+            T[] newArray = (T[]) new Object[capacity];
             System.arraycopy(array, 0, newArray, 0, size);
             array = newArray;
             for(int i = size - 1; i >= index; i--){
@@ -87,13 +97,22 @@ public class MyArray<T> {
         return array[index];
     }
 
-    public boolean searchArray(T data){
+    public boolean update(int index, T data){
+        if(index >= size || index < 0){
+            System.out.println("Error: index is < 0 or >= size");
+            return false;
+        }
+        array[index] = data;
+        return true;
+    }
+
+    public int searchArray(T data){
         for(int i=0; i<size; i++){
-            if(array[i] == data){
-                return true;
+            if(data.equals(array[i])){
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 
     public String printArray(){
@@ -117,6 +136,24 @@ public class MyArray<T> {
         array.insert(4);
         array.delete(1);
         array.insert(5);
+        array.insert(6);
+        array.insert(7);
+        array.insert(8);
+        array.insert(9);
+
         System.out.print(array.printArray());
+
+        for(Integer arr: array){
+            System.out.print(arr);
+        }
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        T[] realArray = (T[])new Object[size];
+        for(int i=0; i<size; i++){
+            realArray[i] = array[i];
+        }
+        return Arrays.stream(realArray).iterator();
     }
 }

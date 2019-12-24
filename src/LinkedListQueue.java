@@ -1,4 +1,6 @@
-public class LinkedListQueue<T> {
+import java.util.Iterator;
+
+public class LinkedListQueue<T> implements Iterable<T>{
     private LinkedList<T> linkedList;
 
     public int getSize() {
@@ -13,7 +15,7 @@ public class LinkedListQueue<T> {
         return linkedList.getData(index);
     }
 
-    public boolean searchData(T data){
+    public int searchData(T data){
         return linkedList.searchList(data);
     }
 
@@ -30,4 +32,8 @@ public class LinkedListQueue<T> {
     }
 
 
+    @Override
+    public Iterator<T> iterator() {
+        return linkedList.iterator();
+    }
 }

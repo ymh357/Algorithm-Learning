@@ -1,4 +1,6 @@
-public class LinkedListStack<T> {
+import java.util.Iterator;
+
+public class LinkedListStack<T> implements Iterable<T> {
     private LinkedList<T> linkedList;
 
     public int getSize() {
@@ -13,7 +15,7 @@ public class LinkedListStack<T> {
         return linkedList.getData(index);
     }
 
-    public boolean searchData(T data){
+    public int searchData(T data){
         return linkedList.searchList(data);
     }
 
@@ -27,5 +29,10 @@ public class LinkedListStack<T> {
 
     public String printStack(){
         return linkedList.printList();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return linkedList.iterator();
     }
 }
