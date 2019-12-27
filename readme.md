@@ -1,0 +1,1 @@
+Only array is built with the native Java array, and all the rest are built based on our self-created data structure.
