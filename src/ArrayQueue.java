@@ -3,22 +3,23 @@ import java.util.Iterator;
 
 public class ArrayQueue<T> implements Iterable<T>{
 
-    private T[] array;
+    private MyArray<T> array;
     private int headIndex = -1;
     private int size;
-    private int capacity;
 
     public int getSize() {
         return size;
     }
 
     public int getCapacity() {
-        return capacity;
+        return array.getCapacity();
     }
 
     public ArrayQueue(int capacity) {
-        array = (T[]) new Object[capacity];
-        this.capacity = capacity;
+        array = new MyArray<>(capacity);
+        for(int i=0; i<capacity; i++){
+            array.insert(null);
+        }
         size = 0;
     }
 
@@ -27,13 +28,13 @@ public class ArrayQueue<T> implements Iterable<T>{
             System.out.println("Error: index is < 0 or >= size");
             return null;
         }
-        return array[(headIndex + index) % capacity];
+        return array.getData((headIndex + index) % array.getCapacity());
     }
 
     public int searchData(T data){
         for(int i=0; i<size; i++){
-            int index = (i + headIndex) % capacity;
-            if(data.equals(array[index])){
+            int index = (i + headIndex) % array.getCapacity();
+            if(data.equals(array.getData(index))){
                 return i;
             }
         }
@@ -45,19 +46,21 @@ public class ArrayQueue<T> implements Iterable<T>{
             headIndex = 0;
         }
 
-        if(size < capacity){
-            int index = (headIndex + size) % capacity;
-            array[index] = data;
+        if(size < array.getCapacity()){
+            int index = (headIndex + size) % array.getCapacity();
+            array.update(index, data);
             size ++;
         }
         else{
-            T[] newArray = (T[]) new Object[capacity * 2];
-            for(int i = 0; i < size; i ++){
-                newArray[i] = getData(i);
+            MyArray<T> newArray = new MyArray<>(array.getCapacity() * 2);
+            for(int i = 0; i < newArray.getCapacity(); i ++){
+                newArray.insert(null);
             }
-            newArray[size] = data;
+            for(int i = 0; i < size; i ++){
+                newArray.update(i, getData(i));
+            }
+            newArray.update(size, data);
             array = newArray;
-            capacity *= 2;
             headIndex = 0;
             size ++;
         }
@@ -67,7 +70,7 @@ public class ArrayQueue<T> implements Iterable<T>{
         if(size <= 0){
             return false;
         }
-        headIndex = (headIndex + 1) % capacity;
+        headIndex = (headIndex + 1) % array.getCapacity();
         size --;
         return true;
     }
@@ -97,14 +100,27 @@ public class ArrayQueue<T> implements Iterable<T>{
         arrayQueue.unshift();
 
         System.out.print(arrayQueue.printQueue());
+        for(Integer i: arrayQueue){
+            System.out.print(i);
+        }
     }
 
     @Override
     public Iterator<T> iterator() {
-        T[] realArray = (T[])new Object[size];
-        for(int i=0; i<size; i++){
-            realArray[i] = getData(i);
-        }
-        return Arrays.stream(realArray).iterator();
+
+        return new Iterator<T>() {
+            int count = 0;
+            public boolean hasNext() {
+                return count < size;
+            }
+
+            @Override
+            public T next() {
+                T data = getData(count);
+                count ++;
+                return data;
+            }
+        };
+
     }
 }
