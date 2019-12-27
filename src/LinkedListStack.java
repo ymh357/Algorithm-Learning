@@ -7,7 +7,7 @@ public class LinkedListStack<T> implements Iterable<T> {
         return linkedList.getSize();
     }
 
-    public LinkedListStack(T[] initialArray) {
+    public LinkedListStack(MyArray<T> initialArray) {
         linkedList = new LinkedList<T>(initialArray);
     }
 

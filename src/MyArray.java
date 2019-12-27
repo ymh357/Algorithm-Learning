@@ -16,6 +16,13 @@ public class MyArray<T> implements Iterable<T> {
         this.capacity = capacity;
         size = 0;
     }
+
+    public void buildArray(T[] arr){
+        for(T ele: arr){
+            insert(ele);
+        }
+    }
+
     public int getSize() {
         return size;
     }

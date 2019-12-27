@@ -11,26 +11,26 @@ public class LinkedList<T> implements Iterable<T>{
         return size;
     }
 
-    public LinkedList(T[] initialArray){
+    public LinkedList(MyArray<T> initialArray){
 
-        if(initialArray == null || initialArray.length == 0){
+        if(initialArray == null || initialArray.getSize() == 0){
             head = null;
             tail = null;
             size = 0;
             return;
         }
 
-        head = new Node(initialArray[0], null);
+        head = new Node(initialArray.getData(0), null);
         Node previous = head;
         Node next = null;
-        for(int i = 1; i < initialArray.length; i++){
-            next = new Node(initialArray[i], null);
+        for(int i = 1; i < initialArray.getSize(); i++){
+            next = new Node(initialArray.getData(i), null);
             previous.next = next;
             previous = next;
         }
         next.next = null;
         tail = next;
-        size = initialArray.length;
+        size = initialArray.getSize();
     }
 
     public int searchList(T data){

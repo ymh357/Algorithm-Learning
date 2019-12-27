@@ -7,7 +7,7 @@ public class LinkedListQueue<T> implements Iterable<T>{
         return linkedList.getSize();
     }
 
-    public LinkedListQueue(T[] initialArray) {
+    public LinkedListQueue(MyArray<T> initialArray) {
         linkedList = new LinkedList<T>(initialArray);
     }
 
