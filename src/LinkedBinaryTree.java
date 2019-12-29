@@ -144,6 +144,49 @@ public class LinkedBinaryTree<T> {
         return 1 + Math.max(rightLevels, leftLevels);
     }
 
+    public int getLeaveNum(){
+        return _getLeaveNum(headNode);
+    }
+
+    private int _getLeaveNum(Node node) {
+        if(node == null){
+            return 0;
+        }
+        if(node.leftChild == null &&  node.rightChild == null){
+            return 1;
+        }
+        return _getLeaveNum(node.leftChild) + _getLeaveNum(node.rightChild);
+    }
+
+    public boolean isCompleteTree(){
+
+        LinkedListQueue<Node> queue = new LinkedListQueue<>(null);
+        boolean marked = false;
+        queue.push(headNode);
+        while(queue.getSize()>0){
+            Node node = queue.getData(0);
+
+            if(marked){
+                if(node.leftChild != null || node.rightChild != null){
+                    return false;
+                }
+            }
+            if(node.rightChild != null && node.leftChild == null){
+                return false;
+            }
+            if(node.leftChild != null){
+                queue.push(node.leftChild);
+            }
+            if(node.rightChild != null){
+                queue.push(node.rightChild);
+            }
+            queue.unshift();
+            if(node.rightChild == null){
+                marked = true;
+            }
+        }
+        return true;
+    }
 
     private class Node{
         public T data;
@@ -153,13 +196,14 @@ public class LinkedBinaryTree<T> {
 
     public static void main(String[] args) {
         MyArray<Integer> array = new MyArray<>(11);
-        array.buildArray(new Integer[]{3,2,9,null,null,10,null,
-                null,8,null,4});
+        array.buildArray(new Integer[]{1,2,4,8,null,null,9,null,null,5,10,null,null,11,null,null,3,6,12,null,null,13,null,null,7,14,null,null,15,null,null});
         LinkedBinaryTree<Integer> tree = new LinkedBinaryTree<>(new LinkedList<>(array));
         System.out.print(tree.printTree("pre"));
         System.out.print(tree.printTree("in"));
         System.out.print(tree.printTree("post"));
         System.out.print(tree.printTree("breadth"));
-        System.out.print("levels: " + tree.getLevels());
+        System.out.println("levels: " + tree.getLevels());
+        System.out.println("Leave Number: " + tree.getLeaveNum());
+        System.out.println("is complete: " + tree.isCompleteTree());
     }
 }

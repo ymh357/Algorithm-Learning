@@ -133,15 +133,48 @@ public class ArrayBinaryTree<T> {
         return 1 + Math.max(rightLevels, leftLevels);
     }
 
+    public int getLeaveNum(){
+        return _getLeaveNum(0);
+    }
+
+    private int _getLeaveNum(int index) {
+        if(index >= tree.getSize()){
+            return 0;
+        }
+        int leftChildIndex = 2 * index + 1;
+        int rightChildIndex = 2 * index + 2;
+        if(leftChildIndex >= tree.getSize() && rightChildIndex >= tree.getSize()){
+            return 1;
+        }
+        return _getLeaveNum(leftChildIndex) + _getLeaveNum(rightChildIndex);
+    }
+
+    public boolean isCompleteTree(){
+        boolean marked = false;
+        for(T data: tree){
+
+            if(marked){
+                if(data != null){
+                    return false;
+                }
+            }
+
+            if(data == null){
+                marked = true;
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
         MyArray<Integer> array = new MyArray<>(9);
-        array.buildArray(new Integer[]{1,2,3,4,5,null,6,
-                null,8});
+        array.buildArray(new Integer[]{1,2,3,4,5,6,7});
         ArrayBinaryTree<Integer> tree = new ArrayBinaryTree<>(array);
         System.out.print(tree.printTree("pre"));
         System.out.print(tree.printTree("in"));
         System.out.print(tree.printTree("post"));
         System.out.print(tree.printTree("breadth"));
         System.out.print("levels: " + tree.getLevels());
+        System.out.print("is complete: " + tree.isCompleteTree());
     }
 }
