@@ -1,7 +1,7 @@
 # Algorithm Learning Recording 
  This repository records the data structures and algorithms I learn. 
 
-### Database:  
+### Data Structure:  
  Only MyArray is built with the native Java array,   
  all the rest are built based on self-created data structure.  
  
