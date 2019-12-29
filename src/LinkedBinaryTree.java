@@ -1,7 +1,7 @@
 public class LinkedBinaryTree<T> {
 
-    private Node headNode;
-    private int size;
+    protected Node headNode;
+    protected int size;
 
     public LinkedBinaryTree(LinkedList<T> initialLinkedList){
         headNode = _createTree(initialLinkedList);
@@ -188,7 +188,36 @@ public class LinkedBinaryTree<T> {
         return true;
     }
 
-    private class Node{
+    protected Node getParent(Node source){
+        return _getParent(source, headNode);
+    }
+
+    private Node _getParent(Node source, Node head){
+        if(source == null || head == null){
+            return null;
+        }
+        if(source.equals(head)){
+            return null;
+        }
+        LinkedListQueue<Node> queue = new LinkedListQueue<>(null);
+        queue.push(head);
+        while(queue.getSize()>0){
+            Node node = queue.getData(0);
+            if(source.equals(node.leftChild) || source.equals(node.rightChild)){
+                return node;
+            }
+            if(node.leftChild != null){
+                queue.push(node.leftChild);
+            }
+            if(node.rightChild != null){
+                queue.push(node.rightChild);
+            }
+            queue.unshift();
+        }
+        return null;
+    }
+
+    protected class Node{
         public T data;
         public Node leftChild;
         public Node rightChild;
