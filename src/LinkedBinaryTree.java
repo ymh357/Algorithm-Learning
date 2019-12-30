@@ -135,7 +135,7 @@ public class LinkedBinaryTree<T> {
         return _getLevels(headNode);
     }
 
-    private int _getLevels(Node node) {
+    protected int _getLevels(Node node) {
         if(node == null){
             return 0;
         }

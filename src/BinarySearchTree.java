@@ -53,6 +53,9 @@ public class BinarySearchTree<T extends Comparable<T>> extends LinkedBinaryTree<
     }
 
     public void addData(T data){
+        if(searchTree(data)!=null){
+            return;
+        }
          headNode= _addData(data, headNode);
     }
 
