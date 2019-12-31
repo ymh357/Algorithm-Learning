@@ -1,7 +1,17 @@
 public class LinkedBinaryTree<T> {
 
     protected Node headNode;
-    protected int size;
+
+    public int getSize(){
+        return _getSize(headNode);
+    }
+
+    private int _getSize(Node head){
+        if(head == null){
+            return 0;
+        }
+        return 1 + _getSize(head.leftChild) + _getSize(head.rightChild);
+    }
 
     public LinkedBinaryTree(LinkedList<T> initialLinkedList){
         headNode = _createTree(initialLinkedList);
@@ -19,7 +29,6 @@ public class LinkedBinaryTree<T> {
 
         Node node = new Node();
         node.data = data;
-        size ++;
         node.leftChild = _createTree(initialLinkedList);
         node.rightChild = _createTree(initialLinkedList);
 
@@ -27,7 +36,7 @@ public class LinkedBinaryTree<T> {
     }
 
     public MyArray<T> preOrderTraverse(){
-        MyArray<T> array = new MyArray<>(size);
+        MyArray<T> array = new MyArray<>(getSize());
         _preOrderTraverse(headNode, array);
         return array;
     }
@@ -42,7 +51,7 @@ public class LinkedBinaryTree<T> {
     }
 
     public MyArray<T> preOrderTraverse_stack(){
-        MyArray<T> array = new MyArray<T>(size);
+        MyArray<T> array = new MyArray<T>(getSize());
         LinkedListStack<Node> stack = new LinkedListStack<>(null);
         stack.push(headNode);
         while (stack.getSize() > 0){
@@ -82,7 +91,7 @@ public class LinkedBinaryTree<T> {
     }
 
     public MyArray<T> breadthFirstTraverse() {
-        MyArray<T> array = new MyArray<>(size);
+        MyArray<T> array = new MyArray<>(getSize());
 
         LinkedListQueue<Node> queue = new LinkedListQueue<>(null);
         queue.push(headNode);
@@ -102,7 +111,7 @@ public class LinkedBinaryTree<T> {
     }
 
     public MyArray<T> inOrderTraverse() {
-        MyArray<T> array = new MyArray<>(size);
+        MyArray<T> array = new MyArray<>(getSize());
         _inOrderTraverse(headNode, array);
         return array;
     }
@@ -117,7 +126,7 @@ public class LinkedBinaryTree<T> {
     }
 
     public MyArray<T> postOrderTraverse() {
-        MyArray<T> array = new MyArray<>(size);
+        MyArray<T> array = new MyArray<>(getSize());
         _postOrderTraverse(headNode, array);
         return array;
     }

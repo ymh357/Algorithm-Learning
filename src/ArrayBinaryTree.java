@@ -1,5 +1,15 @@
 public class ArrayBinaryTree<T> {
-    private MyArray<T> tree;
+    protected MyArray<T> tree;
+
+    public int getSize(){
+        int count = 0;
+        for(T ele : tree){
+            if(ele != null){
+                count++;
+            }
+        }
+        return count;
+    }
 
     public ArrayBinaryTree(MyArray<T> initialArray){
         tree = initialArray;
@@ -76,6 +86,10 @@ public class ArrayBinaryTree<T> {
         }
 
         return array;
+    }
+
+    protected String displayTree() {
+        return tree.printArray();
     }
 
     public MyArray<T> postOrderTraverse() {
@@ -166,9 +180,23 @@ public class ArrayBinaryTree<T> {
         return true;
     }
 
+    protected int getParent(int childIndex){
+        if(childIndex<0 || childIndex > tree.getSize()){
+            return -2;
+        }
+        if(childIndex == 0){
+            return -1;
+        }
+        if(childIndex % 2 != 0){
+            return (childIndex - 1) / 2;
+        }else {
+            return (childIndex - 2) / 2;
+        }
+    }
+
     public static void main(String[] args) {
         MyArray<Integer> array = new MyArray<>(9);
-        array.buildArray(new Integer[]{1,2,3,4,5,6,7});
+        array.buildArray(new Integer[]{1,2,3,4,5,null,7});
         ArrayBinaryTree<Integer> tree = new ArrayBinaryTree<>(array);
         System.out.print(tree.printTree("pre"));
         System.out.print(tree.printTree("in"));
